@@ -1,0 +1,11 @@
+{
+    "name": "plugin-hello-ai-guard",
+    "version": "1.0.6",
+    "description": "Guard only. hello-ai ships inside @jpulse-net/plugin-ai-core; this file is stripped from the published bundle.",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "test": "npx jest plugins/hello-ai/webapp/tests/unit --runInBand",
+        "prepublishOnly": "node -e \"console.error('hello-ai is a bundle companion of ai-core. Publish the primary instead: cd ../ai-core && npm publish, or npx jpulse plugin publish ai-core'); process.exit(1)\""
+    }
+}
