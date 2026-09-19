@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.7
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.8
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
