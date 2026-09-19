@@ -1,8 +1,8 @@
-# jPulse Framework / Plugins / Hello AI Plugin v1.0.9
+# jPulse Framework / Plugins / Hello AI Plugin v1.0.10
 
 Scratch-pad sample for the AI agent. Not a product. Copy the pattern into your site; do not import these tools.
 
-Requires jPulse Framework >= 2.0.3. Depends on `ai-core` (same package, `@jpulse-net/plugin-ai-core`).
+Requires jPulse Framework >= 2.0.5. Depends on `ai-core` (same package, `@jpulse-net/plugin-ai-core`).
 
 `autoEnable` is true. Same `npmPackage` as the primary (`@jpulse-net/plugin-ai-core`). No `webapp/bump-version.conf`. Its `package.json` is a publish guard only — `npm publish` here fails and names `ai-core`, and staging strips the file, so the published bundle has no `plugins/hello-ai/package.json`.
 
@@ -30,7 +30,8 @@ npx jest plugins/hello-ai/webapp/tests/unit --runInBand
 
 ## Plugin releases
 
-- 1.0.9: Version lockstep with `ai-core` 1.0.9. No product change — image chips stay on Send in the panel.
-- 1.0.8: Version lockstep with `ai-core` 1.0.8. No product change.
-- 1.0.7: Version lockstep with `ai-core` 1.0.7. No product change.
-- 1.0.6: First release as a bundled companion. Same scratch pad as 1.0.5-in-core (regions, `/pad`, attachments).
+- **1.0.10**, W-237, 2026-09-19: Version lockstep with `ai-core` 1.0.10. No product change — no attach, no mobile, no title setter.
+- **1.0.9**, W-234, 2026-09-19: Version lockstep with `ai-core` 1.0.9. No product change — image chips stay on Send in the panel.
+- **1.0.8**, W-233, 2026-09-19: Version lockstep with `ai-core` 1.0.8. No product change.
+- **1.0.7**, W-232, 2026-09-18: Version lockstep with `ai-core` 1.0.7. No product change.
+- **1.0.6**, W-231, 2026-09-17: First release as a bundled companion. Same scratch pad as 1.0.5-in-core (regions, `/pad`, attachments).

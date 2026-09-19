@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.9
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.10
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -40,3 +40,11 @@ Admin → Plugins → disable **hello-ai**. The page, the site-hello-demos menu 
 ## Copy the pattern
 
 Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and `webapp/utils/ai-tools/`. A site writes the same shapes under `site/webapp/`, not by depending on this plugin's modules.
+
+## Plugin releases
+
+- **1.0.10**, W-237, 2026-09-19: Version lockstep with `ai-core` 1.0.10. No product change — no attach, no mobile, no title setter.
+- **1.0.9**, W-234, 2026-09-19: Version lockstep with `ai-core` 1.0.9. No product change — image chips stay on Send in the panel.
+- **1.0.8**, W-233, 2026-09-19: Version lockstep with `ai-core` 1.0.8. No product change.
+- **1.0.7**, W-232, 2026-09-18: Version lockstep with `ai-core` 1.0.7. No product change.
+- **1.0.6**, W-231, 2026-09-17: First release as a bundled companion. Same scratch pad as 1.0.5-in-core (regions, `/pad`, attachments).

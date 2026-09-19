@@ -2,7 +2,7 @@
  * @name            jPulse Framework / Plugins / Hello AI / WebApp / Tests / Unit / Hello AI
  * @tagline         Isolation, modules, propose, adapter scan
  * @file            plugins/hello-ai/webapp/tests/unit/hello-ai.test.js
- * @version         1.0.9
+ * @version         1.0.10
  * @release         2026-09-19
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
@@ -186,6 +186,10 @@ describe('adapter contract scan', () => {
         expect(text).not.toMatch(/bubblemap/);
         expect(text).not.toMatch(/synapse/);
         expect(text).not.toMatch(/describeScope/);
+        expect(text).not.toMatch(/attach\s*\(/);
+        expect(text).not.toMatch(/canAttach/);
+        expect(text).not.toMatch(/mobile:/);
+        expect(text).not.toMatch(/setTitle/);
     });
 
     test('site menu entry lives on hello-ai, not ai-core', () => {
