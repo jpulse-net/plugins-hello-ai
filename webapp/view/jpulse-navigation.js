@@ -3,7 +3,7 @@
  * @tagline         Site hello-demo navigation for Hello AI
  * @description     Appends Hello AI to site hello demos
  * @file            plugins/hello-ai/webapp/view/jpulse-navigation.js
- * @version         1.0.8
+ * @version         1.0.9
  * @release         2026-09-19
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/

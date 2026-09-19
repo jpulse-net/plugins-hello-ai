@@ -1,4 +1,4 @@
-# jPulse Framework / Plugins / Hello AI Plugin v1.0.8
+# jPulse Framework / Plugins / Hello AI Plugin v1.0.9
 
 Scratch-pad sample for the AI agent. Not a product. Copy the pattern into your site; do not import these tools.
 
@@ -30,4 +30,7 @@ npx jest plugins/hello-ai/webapp/tests/unit --runInBand
 
 ## Plugin releases
 
+- 1.0.9: Version lockstep with `ai-core` 1.0.9. No product change — image chips stay on Send in the panel.
+- 1.0.8: Version lockstep with `ai-core` 1.0.8. No product change.
+- 1.0.7: Version lockstep with `ai-core` 1.0.7. No product change.
 - 1.0.6: First release as a bundled companion. Same scratch pad as 1.0.5-in-core (regions, `/pad`, attachments).

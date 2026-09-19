@@ -2,7 +2,7 @@
  * @name            jPulse Framework / Plugins / Hello AI / WebApp / Tests / Unit / Hello AI
  * @tagline         Isolation, modules, propose, adapter scan
  * @file            plugins/hello-ai/webapp/tests/unit/hello-ai.test.js
- * @version         1.0.8
+ * @version         1.0.9
  * @release         2026-09-19
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
@@ -53,6 +53,7 @@ describe('hello-ai isolation', () => {
             'append_draft',
             'get_hello_clock'
         ]);
+        expect(ctx.tools.map((tool) => tool.name)).not.toContain('propose_image');
         expect(chooseTransport(ctx.tools)).toBe('ws');
     });
 });
