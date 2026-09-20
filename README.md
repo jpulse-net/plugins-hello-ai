@@ -1,4 +1,4 @@
-# jPulse Framework / Plugins / Hello AI Plugin v1.0.10
+# jPulse Framework / Plugins / Hello AI Plugin v1.0.11
 
 Scratch-pad sample for the AI agent. Not a product. Copy the pattern into your site; do not import these tools.
 
