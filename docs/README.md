@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.11
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.12
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -43,6 +43,7 @@ Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and 
 
 ## Plugin releases
 
+- **1.0.12**, W-239, 2026-09-19: Version lockstep with `ai-core` 1.0.12. No product change — no attach, no mobile, no title setter.
 - **1.0.11**, W-238, 2026-09-19: Version lockstep with `ai-core` 1.0.11. No product change — no attach, no mobile, no title setter.
 - **1.0.10**, W-237, 2026-09-19: Version lockstep with `ai-core` 1.0.10. No product change — no attach, no mobile, no title setter.
 - **1.0.9**, W-234, 2026-09-19: Version lockstep with `ai-core` 1.0.9. No product change — image chips stay on Send in the panel.
