@@ -1,7 +1,7 @@
 {
     "name": "hello-ai",
     "npmPackage": "@jpulse-net/plugin-ai-core",
-    "version": "1.0.15",
+    "version": "1.0.16",
     "icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2\"/><path d=\"M20 14h2\"/><path d=\"M15 13v2\"/><path d=\"M9 13v2\"/></svg>",
     "summary": "Scratch-pad sample for the AI agent — part of the ai-core plugin bundle",
     "description": "<p>Worked example for <code>ai-core</code>. A chat panel over a browser-only scratch pad, on the bundled mock provider, with no API key. Copy the pattern into your site. Do not import these tools.</p><p>Installs with the <code>@jpulse-net/plugin-ai-core</code> bundle. Disable this plugin to hide <code>/hello-ai/</code>, its nav entry, and its dashboard card. AI stays on.</p><p>Do not install this plugin separately; it is part of the <code>@jpulse-net/plugin-ai-core</code> bundle.</p>",
@@ -21,7 +21,7 @@
         "schema": [
             {
                 "type": "help",
-                "content": "<p>Hello AI is the scratch-pad sample that ships with the AI bundle. It is not a product. Copy the pattern into your site; do not import these tools.</p><ul><li><a href=\"/hello-ai/\">Hello AI</a> — scratch pad, no API key</li><li><a href=\"/jpulse-docs/installed-plugins/hello-ai/README\">Hello AI guide</a> — what the demo shows and how to disable it</li><li><a href=\"/jpulse-docs/installed-plugins/ai-core/README\">AI Core guide</a> — the site-facing contract</li><li><a href=\"/admin/plugins.shtml\">Plugin management</a> — disable this plugin to hide the demo; AI stays on</li></ul>",
+                "content": "<p>Hello AI is the scratch-pad sample that ships with the AI bundle. It is not a product. Copy the pattern into your site; do not import these tools.</p><ul><li><a href=\"/hello-ai/\">Hello AI</a> — scratch pad, no API key</li><li><a href=\"/hello-ai/code-examples.shtml\">Code examples</a> — view, controller hooks, and pure modules</li><li><a href=\"/hello-ai/architecture.shtml\">Architecture</a> — how a turn reaches the scratch pad</li><li><a href=\"/jpulse-docs/installed-plugins/hello-ai/README\">Hello AI guide</a> — what the demo shows and how to disable it</li><li><a href=\"/jpulse-docs/installed-plugins/ai-core/README\">AI Core guide</a> — the site-facing contract</li><li><a href=\"/admin/plugins.shtml\">Plugin management</a> — disable this plugin to hide the demo; AI stays on</li></ul>",
                 "tab": "General"
             }
         ]

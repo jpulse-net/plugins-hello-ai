@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--
+ * @name            jPulse Framework / Plugins / Hello AI / WebApp / View / Hello AI / Code Examples
+ * @tagline         Code examples for the Hello AI scratch pad
+ * @description     View adapter, controller hooks, and pure tool modules
+ * @file            plugins/hello-ai/webapp/view/hello-ai/code-examples.shtml
+ * @version         1.0.16
+ * @release         2026-09-22
+ * @repository      https://github.com/jpulse-net/plugin-hello-ai
+ * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
+ * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
+ * @license         BSL 1.1 -- see LICENSE file; for commercial use: team@jpulse.net
+ * @genai           80%, Cursor, Grok 4.7
+-->
+<html {{appConfig.system.htmlAttrs}}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello AI - Code Examples - {{app.site.shortName}}</title>
+    {{file.include "jpulse-header.tmpl"}}
+</head>
+<body>
+    <div class="jp-main">
+        <div class="jp-container-1000">
+            <div class="jp-page-header">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg> Hello AI</h1>
+                <span class="jp-subtitle">The view, the controller hooks, and the pure tool modules</span>
+            </div>
+
+            <nav class="jp-btn-nav-group">
+                <a href="/hello-ai/" class="jp-btn jp-btn-outline">📝 Scratch Pad</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/code-examples.shtml" class="jp-btn jp-btn-outline jp-btn-active">💻 Code Examples</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/architecture.shtml" class="jp-btn jp-btn-outline">🏗️ Architecture</a>
+            </nav>
+
+            <div class="jp-card">
+                <h2>💻 Code Examples</h2>
+
+                <div class="jp-info-box">
+                    <p>These listings are the Hello AI demo. Copy the code into your own site under <code>site/webapp/</code>. Do not import this plugin's modules.</p>
+                </div>
+
+                <h3 class="jp-text-warning jp-mt-30">🎨 View: index.shtml</h3>
+                <p>The page owns the textarea the AI agent operates on.</p>
+                <ul>
+                    <li><code>panel.create</code> creates the chat panel on this tab.</li>
+                    <li><code>/help</code> lists every example; three of them are shown here.</li>
+                    <li><code>/pad</code> reports the pad size, and a <code>pad-stats</code> region shows the same count under the compose box.</li>
+                    <li>A hidden <code>/padreset</code> command restores the demo text.</li>
+                    <li><code>adapter.toolData</code> supplies the textarea and the selection to <code>read_draft</code> and <code>propose_draft_rewrite</code>.</li>
+                    <li><code>applyProposal</code> replaces the pad and keeps the previous text for Undo in this tab.</li>
+                    <li><code>executeTool</code> appends text for <code>append_draft</code>.</li>
+                </ul>
+
+                <div class="jp-source-code" data-lang="javascript" data-show-lang="true">
+                    <pre>// plugins/hello-ai/webapp/view/hello-ai/index.shtml
+
+const draft = document.getElementById('hello-ai-draft');
+
+function selectionOf() {
+    const start = draft.selectionStart || 0;
+    const end = draft.selectionEnd || 0;
+    if (end &lt;= start) {
+        return '';
+    }
+    return draft.value.slice(start, end);
+}
+
+const panel = jPulse.ai.panel.create({
+    scopeType: 'hello-ai',
+    scopeId: 'demo',
+    launcher: '#hello-ai-launch',
+    examples: [
+        '[[Read the scratch pad]]',
+        '[[Shorten it]] — propose a shorter rewrite of the scratch pad',
+        '[[What time is it on the server?]]'
+    ],
+    commands: [
+        ...jPulse.ai.commands.defaults,
+        {
+            name: 'pad',
+            hint: 'Scratch pad size and selection',
+            run: function () {
+                const start = draft.selectionStart || 0;
+                const end = draft.selectionEnd || 0;
+                const selected = end &gt; start ? end - start : 0;
+                return 'Scratch pad has ' + draft.value.length
+                    + ' characters, ' + selected + ' selected';
+            }
+        }
+    ],
+    regions: [
+        {
+            name: 'pad-stats',
+            anchor: 'composeBelow',
+            render: function () {
+                const start = draft.selectionStart || 0;
+                const end = draft.selectionEnd || 0;
+                const selected = end &gt; start ? end - start : 0;
+                return 'Scratch pad has ' + draft.value.length
+                    + ' characters, ' + selected + ' selected';
+            }
+        }
+    ],
+    adapter: {
+        _undoById: {},
+        toolData: function (name) {
+            if (name === 'read_draft' || name === 'propose_draft_rewrite') {
+                return { text: draft.value, selection: selectionOf() };
+            }
+            return {};
+        },
+        renderProposalPreview: function (proposal) {
+            return (proposal &amp;&amp; proposal.preview) || '';
+        },
+        applyProposal: function (proposal) {
+            const payload = (proposal &amp;&amp; proposal.payload) || {};
+            this._undoById[proposal.id] = draft.value;
+            draft.value = String(payload.text || '');
+            return true;
+        },
+        canUndoProposal: function (proposal) {
+            return !!(proposal &amp;&amp; this._undoById[proposal.id] != null);
+        },
+        undoProposal: function (proposal) {
+            if (!this.canUndoProposal(proposal)) {
+                return false;
+            }
+            draft.value = this._undoById[proposal.id];
+            delete this._undoById[proposal.id];
+            return true;
+        },
+        executeTool: function (name, args) {
+            if (name !== 'append_draft') {
+                return {
+                    ok: false,
+                    code: 'AI_UNKNOWN_TOOL',
+                    error: 'Unknown client tool ' + name
+                };
+            }
+            const text = String(args &amp;&amp; args.text || '');
+            const prefix = draft.value &amp;&amp; !draft.value.endsWith('\n') ? '\n' : '';
+            draft.value = draft.value + prefix + text;
+            return {
+                ok: true,
+                data: { appended: text.length, totalChars: draft.value.length },
+                summary: 'append_draft ' + text.length + ' chars'
+            };
+        },
+        describeContext: function () {
+            return 'Unsaved scratch pad';
+        },
+        describeTarget: function () {
+            return selectionOf() || 'all text';
+        }
+    }
+});</pre>
+                </div>
+
+                <h3 class="jp-text-success jp-mt-30">🎮 Controller: helloAi.js</h3>
+                <p>The controller registers the tools.</p>
+                <ul>
+                    <li>Tools are pushed only when <code>scopeType</code> is <code>hello-ai</code>, so the rest of the site does not offer them.</li>
+                    <li><code>read_draft</code>, <code>propose_draft_rewrite</code>, and <code>append_draft</code> run in the browser.</li>
+                    <li><code>get_hello_clock</code> runs on the server. It returns the server time and the current username.</li>
+                    <li><code>onAiScopeResolve</code> sets the scope label. <code>onAiToolData</code> defaults module data. <code>onAiPromptFragment</code> adds the scratch-pad instructions.</li>
+                    <li>Each tool in the file has a schema. Budgets include the over-limit message and hint.</li>
+                </ul>
+
+                <div class="jp-source-code" data-lang="javascript" data-show-lang="true">
+                    <pre>// plugins/hello-ai/webapp/controller/helloAi.js
+
+const SCOPE_TYPE = 'hello-ai';
+
+function isHelloScope(ctx) {
+    return (ctx?.actor?.scopeType || ctx?.scopeType) === SCOPE_TYPE;
+}
+
+class HelloAiController {
+    static hooks = {
+        onAiScopeResolve: { handler: 'onAiScopeResolve' },
+        onAiToolRegister: { handler: 'onAiToolRegister' },
+        onAiToolExecute: { handler: 'onAiToolExecute' },
+        onAiToolData: { handler: 'onAiToolData' },
+        onAiPromptFragment: { handler: 'onAiPromptFragment' }
+    };
+
+    static async onAiToolRegister(ctx) {
+        if (!isHelloScope(ctx)) {
+            return ctx;
+        }
+        // Each tool in the file also has a schema. Budgets include overMessage and overHint.
+        ctx.tools.push(
+            {
+                name: 'read_draft',
+                description: 'Read the scratch pad. data.text is the full text (capped at 32KB). data.excerpt is a 160-character preview.',
+                host: 'client',
+                module: 'readDraft',
+                requires: 'scope:read'
+            },
+            {
+                name: 'propose_draft_rewrite',
+                description: 'Propose a full replacement of the scratch pad. Creates an Apply card; does not write.',
+                host: 'client',
+                module: 'proposeRewrite',
+                requires: 'scope:write',
+                proposes: true,
+                dedupeArgs: true,
+                budget: { key: 'proposals', max: 3 }
+            },
+            {
+                name: 'append_draft',
+                description: 'Append text to the scratch pad. Writes immediately; this is not a proposal.',
+                host: 'client',
+                requires: 'scope:write',
+                mutates: true,
+                budget: { key: 'writes', max: 3 }
+            },
+            {
+                name: 'get_hello_clock',
+                description: 'Return the server time and the current username.',
+                host: 'server'
+            }
+        );
+        return ctx;
+    }
+
+    static async onAiToolExecute(ctx) {
+        if (ctx.tool?.name !== 'get_hello_clock') {
+            return ctx;
+        }
+        ctx.result = {
+            ok: true,
+            data: {
+                serverTime: new Date().toISOString(),
+                username: ctx.actor?.username || ''
+            },
+            summary: 'get_hello_clock'
+        };
+        return ctx;
+    }
+}</pre>
+                </div>
+
+                <h3 class="jp-text-primary jp-mt-30">📊 Module: readDraft.js</h3>
+                <p><code>read_draft</code> names this module. It reads the scratch pad and returns a result.</p>
+                <ul>
+                    <li>Takes <code>text</code> and <code>selection</code> from <code>adapter.toolData</code>.</li>
+                    <li>Returns character, word, and line counts, plus the selection.</li>
+                    <li>Returns the text, capped at 32 KB, and a 160-character excerpt.</li>
+                    <li>Leaves the textarea unchanged.</li>
+                </ul>
+
+                <div class="jp-source-code" data-lang="javascript" data-show-lang="true">
+                    <pre>// plugins/hello-ai/webapp/utils/ai-tools/readDraft.js
+
+const EXCERPT_CHARS = 160;
+const TEXT_CHARS = 32 * 1024;
+
+export function run(data = {}, args = {}) {
+    const text = String(data.text || '');
+    const selection = String(data.selection || '');
+    const excerptChars = Number.isFinite(args.excerptChars) ? args.excerptChars : EXCERPT_CHARS;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const lines = text ? text.split(/\n/).length : 0;
+    const excerpt = text.length &gt; excerptChars ? `${text.slice(0, excerptChars).trim()}…` : text;
+    const clipped = text.length &gt; TEXT_CHARS;
+    return {
+        ok: true,
+        data: {
+            chars: text.length,
+            words,
+            lines,
+            selection,
+            excerpt,
+            text: clipped ? text.slice(0, TEXT_CHARS) : text,
+            truncated: clipped
+        },
+        summary: `read_draft ${words} words`
+    };
+}</pre>
+                </div>
+
+                <h3 class="jp-text-primary jp-mt-30">📊 Module: proposeRewrite.js</h3>
+                <p><code>propose_draft_rewrite</code> names this module. A successful run returns a proposal. Apply writes later, in <code>adapter.applyProposal</code> on the view.</p>
+                <ul>
+                    <li>Requires a non-empty replacement <code>text</code>.</li>
+                    <li>Rejects text longer than 32 KB.</li>
+                    <li>Returns <code>data.proposal</code> with <code>payload.text</code> and the current length.</li>
+                    <li><code>previewLine</code> builds the one-line preview on the Apply card and clips each side to 80 characters.</li>
+                    <li>Leaves the textarea unchanged.</li>
+                </ul>
+
+                <div class="jp-source-code" data-lang="javascript" data-show-lang="true">
+                    <pre>// plugins/hello-ai/webapp/utils/ai-tools/proposeRewrite.js
+
+const TEXT_CHARS = 32 * 1024;
+
+export function run(data = {}, args = {}) {
+    const current = String(data.text || '');
+    const text = String(args.text || '');
+    if (!text.trim()) {
+        return {
+            ok: false,
+            code: 'AI_BAD_ARGS',
+            error: 'text is required.',
+            hint: 'Pass the full replacement text for the scratch pad.'
+        };
+    }
+    if (text.length &gt; TEXT_CHARS) {
+        return {
+            ok: false,
+            code: 'AI_PROPOSAL_TOO_LARGE',
+            error: `Proposed text is ${text.length} characters; the cap is ${TEXT_CHARS}.`
+        };
+    }
+    return {
+        ok: true,
+        data: {
+            proposal: {
+                kind: 'rewrite',
+                preview: previewLine(current, text),
+                payload: {
+                    text,
+                    expectedChars: current.length
+                }
+            }
+        },
+        summary: `propose_draft_rewrite ${text.length} chars`
+    };
+}</pre>
+                </div>
+
+                <h3>🔗 Key Patterns</h3>
+                <div class="jp-card">
+                    <ul>
+                        <li><strong>Scope gate</strong> — tools register only when <code>scopeType</code> is <code>hello-ai</code></li>
+                        <li><strong>Client host</strong> — <code>read_draft</code>, <code>propose_draft_rewrite</code>, and <code>append_draft</code> run in this tab. A turn on this page uses the WebSocket</li>
+                        <li><strong>Server host</strong> — <code>get_hello_clock</code> runs in <code>onAiToolExecute</code></li>
+                        <li><strong>Pure module</strong> — <code>readDraft</code> and <code>proposeRewrite</code> take data and args and return a result. They do not write the pad</li>
+                        <li><strong>Direct write</strong> — <code>append_draft</code> is <code>mutates: true</code> and has no module. <code>adapter.executeTool</code> appends immediately</li>
+                        <li><strong>Proposal</strong> — <code>proposes: true</code> shows an Apply card. Undo uses the snapshot stored on the adapter, in this tab only</li>
+                        <li><strong>Copy, don't import</strong> — a site writes the same shapes under <code>site/webapp/</code></li>
+                    </ul>
+                </div>
+
+                <div class="jp-output jp-output-info jp-mt-15">
+                    <p>The <a href="/hello-ai/architecture.shtml">Architecture</a> page follows one read, one proposal, one append, and the server clock from the button to the textarea.</p>
+                </div>
+            </div>
+
+            <div class="jp-btn-nav-group">
+                <a href="/" class="jp-btn jp-btn-outline">🏠 Home</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello/" class="jp-btn jp-btn-outline">🌐 Hello World Site Demos</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/" class="jp-btn jp-btn-active">🤖 Hello AI</a>
+            </div>
+        </div>
+    </div>
+    {{file.include "jpulse-footer.tmpl"}}
+</body>
+</html>
+<!-- EOF plugins/hello-ai/webapp/view/hello-ai/code-examples.shtml -->

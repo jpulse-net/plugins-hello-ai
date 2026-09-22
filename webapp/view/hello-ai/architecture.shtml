@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--
+ * @name            jPulse Framework / Plugins / Hello AI / WebApp / View / Hello AI / Architecture
+ * @tagline         Architecture of the Hello AI scratch pad
+ * @description     How the panel, the browser tools, and the server clock connect
+ * @file            plugins/hello-ai/webapp/view/hello-ai/architecture.shtml
+ * @version         1.0.16
+ * @release         2026-09-22
+ * @repository      https://github.com/jpulse-net/plugin-hello-ai
+ * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
+ * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
+ * @license         BSL 1.1 -- see LICENSE file; for commercial use: team@jpulse.net
+ * @genai           80%, Cursor, Grok 4.7
+-->
+<html {{appConfig.system.htmlAttrs}}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello AI - Architecture - {{app.site.shortName}}</title>
+    {{file.include "jpulse-header.tmpl"}}
+    <style>
+        .local-flow-diagram {
+            background: var(--jp-theme-bg-secondary);
+            border: 2px solid var(--jp-theme-border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: monospace;
+            line-height: 1.8;
+            color: var(--jp-theme-text-primary);
+        }
+
+        .local-flow-step {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+        }
+
+        .local-flow-arrow {
+            color: var(--jp-theme-color-primary);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="jp-main">
+        <div class="jp-container-1000">
+            <div class="jp-page-header">
+                <h1><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg> Hello AI</h1>
+                <span class="jp-subtitle">How the scratch pad, the panel, and the tools connect</span>
+            </div>
+
+            <nav class="jp-btn-nav-group">
+                <a href="/hello-ai/" class="jp-btn jp-btn-outline">📝 Scratch Pad</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/code-examples.shtml" class="jp-btn jp-btn-outline">💻 Code Examples</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/architecture.shtml" class="jp-btn jp-btn-outline jp-btn-active">🏗️ Architecture</a>
+            </nav>
+
+            <div class="jp-card">
+                <h2 class="jp-card-dialog-heading">🏗️ Architecture</h2>
+
+                <div class="jp-info-box">
+                    <p>Hello AI is three HTML documents. <a href="/hello-ai/">Scratch Pad</a> is the demo. <a href="/hello-ai/code-examples.shtml">Code Examples</a> and this page are the write-up. Each address loads its own page, the same way the other hello examples do.</p>
+                </div>
+
+                <h3>📄 Three pages</h3>
+                <p>The scratch pad is the textarea on <code>/hello-ai/</code>. This page does not have that textarea. Opening Code Examples or Architecture in this tab loads a new document. The pad you were editing stays on the Scratch Pad tab if that tab is still open. A reload of Scratch Pad restores the text baked into the HTML. There is no save endpoint and no database collection for the pad.</p>
+
+                <h3>🧩 Who owns what</h3>
+                <table class="jp-table">
+                    <thead>
+                        <tr>
+                            <th>Piece</th>
+                            <th>Where it runs</th>
+                            <th>What it owns</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>View</strong></td>
+                            <td>Browser, <code>index.shtml</code></td>
+                            <td>The textarea, <code>panel.create</code>, and the adapter that reads and writes the pad</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Panel</strong></td>
+                            <td>Browser, AI Core</td>
+                            <td>The chat UI, turns, Apply cards, <code>/help</code>, attachments</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Modules</strong></td>
+                            <td>Browser, when a client tool runs</td>
+                            <td><code>readDraft</code> and <code>proposeRewrite</code>. Both return a result. Neither writes the pad</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Controller</strong></td>
+                            <td>Server, <code>helloAi.js</code></td>
+                            <td>Which tools exist for this scope, the server clock, the prompt fragment</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>🔧 The four tools</h3>
+                <table class="jp-table">
+                    <thead>
+                        <tr>
+                            <th>Tool</th>
+                            <th>Host</th>
+                            <th>What a call does</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>read_draft</code></td>
+                            <td>Client, module <code>readDraft</code></td>
+                            <td>Returns the pad text, capped at 32 KB, plus a 160-character excerpt. The textarea stays as it is</td>
+                        </tr>
+                        <tr>
+                            <td><code>propose_draft_rewrite</code></td>
+                            <td>Client, module <code>proposeRewrite</code>, <code>proposes: true</code></td>
+                            <td>Returns a proposal. The panel shows an Apply card. Up to 3 proposals per turn. The same arguments twice in one turn are rejected</td>
+                        </tr>
+                        <tr>
+                            <td><code>append_draft</code></td>
+                            <td>Client, <code>adapter.executeTool</code>, <code>mutates: true</code></td>
+                            <td>Appends immediately. There is no Apply card. Up to 3 writes per turn</td>
+                        </tr>
+                        <tr>
+                            <td><code>get_hello_clock</code></td>
+                            <td>Server, <code>onAiToolExecute</code></td>
+                            <td>Returns the server time and the current username. The pad is not involved</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Registration is gated on <code>scopeType === 'hello-ai'</code>. Another page that opens the panel does not inherit these tools, and installing the bundle does not open a WebSocket on every page.</p>
+
+                <h3>📋 Page load</h3>
+                <div class="local-flow-diagram">
+                    <div class="local-flow-step">
+                        <strong>1. Browser</strong><br>
+                        Requests <code>/hello-ai/</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>2. Server</strong><br>
+                        Sends the HTML document: heading, Open chat button, textarea, and the page script.<br>
+                        The pad text in that HTML is the demo paragraph. Nothing is loaded from a database
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>3. Browser</strong><br>
+                        <code>jPulse.dom.ready</code> runs <code>jPulse.ai.panel.create</code><br>
+                        with <code>scopeType: 'hello-ai'</code> and <code>scopeId: 'demo'</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>4. Capability</strong><br>
+                        The controller's <code>onAiToolRegister</code> adds the four tools for this scope.<br>
+                        Client-host tools are on the list, so a turn on this page uses the WebSocket
+                    </div>
+                </div>
+
+                <h3>📋 Read the scratch pad</h3>
+                <div class="local-flow-diagram">
+                    <div class="local-flow-step">
+                        <strong>1. Panel</strong><br>
+                        The user sends a turn, for example from <code>[[Read the scratch pad]]</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>2. Server</strong><br>
+                        The model calls <code>read_draft</code>. The server asks this tab to run it,<br>
+                        because the tool is <code>host: 'client'</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>3. Browser</strong><br>
+                        Loads the <code>readDraft</code> module.<br>
+                        <code>adapter.toolData('read_draft')</code> returns <code>{ text, selection }</code> from the textarea.<br>
+                        <code>run()</code> returns counts, an excerpt, and the text capped at 32 KB
+                    </div>
+                    <div class="local-flow-arrow">↑</div>
+                    <div class="local-flow-step">
+                        <strong>4. Server</strong><br>
+                        The tool result goes back into the turn, so the model can use it.<br>
+                        The textarea is unchanged
+                    </div>
+                </div>
+
+                <h3>📋 Propose a rewrite</h3>
+                <div class="local-flow-diagram">
+                    <div class="local-flow-step">
+                        <strong>1. Browser module</strong><br>
+                        <code>proposeRewrite.run</code> checks the replacement text and returns<br>
+                        <code>data.proposal</code> with a preview line and <code>payload.text</code>.<br>
+                        It does not assign <code>draft.value</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>2. Panel</strong><br>
+                        Shows an Apply card. <code>adapter.renderProposalPreview</code> supplies the preview line.<br>
+                        Several calls in one turn are several cards, up to the proposal budget
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>3. Apply</strong><br>
+                        <code>adapter.applyProposal</code> stores the current textarea on <code>_undoById</code><br>
+                        and replaces <code>draft.value</code> with <code>payload.text</code>
+                    </div>
+                    <div class="local-flow-arrow">↓</div>
+                    <div class="local-flow-step">
+                        <strong>4. Undo</strong><br>
+                        <code>canUndoProposal</code> is true only while this tab still holds that snapshot.<br>
+                        A reload or another tab has no snapshot, so Undo stays hidden
+                    </div>
+                </div>
+
+                <h3>📋 Append, and the server clock</h3>
+                <div class="jp-output jp-output-info">
+                    <h4>append_draft</h4>
+                    <p><code>append_draft</code> has no module. The browser calls <code>adapter.executeTool</code>, which appends <code>args.text</code> to the textarea and returns the new length. The user sees the pad change. There is no Apply card.</p>
+                </div>
+                <div class="jp-output jp-output-info jp-mt-15">
+                    <h4>get_hello_clock</h4>
+                    <p><code>get_hello_clock</code> is <code>host: 'server'</code>. <code>onAiToolExecute</code> sets <code>ctx.result</code> to the ISO time and <code>ctx.actor.username</code>. The browser does not run a module, and the textarea is not read or written.</p>
+                </div>
+
+                <h3>📁 File structure</h3>
+                <div class="jp-source-code">
+                    <pre>plugins/hello-ai/webapp/
+├── controller/
+│   └── helloAi.js                 # Scope, tool list, server clock, prompt
+├── utils/ai-tools/
+│   ├── readDraft.js               # Pure reader
+│   └── proposeRewrite.js          # Pure proposal
+└── view/
+    ├── jpulse-navigation.js       # Hello World Site Demos entry
+    └── hello-ai/
+        ├── index.shtml            # Scratch pad and panel
+        ├── code-examples.shtml
+        └── architecture.shtml</pre>
+                </div>
+
+                <h3>✅ What to copy</h3>
+                <div class="jp-output jp-output-success">
+                    <ul>
+                        <li>A view that calls <code>jPulse.ai.panel.create</code> with a <code>scopeType</code> your controller recognizes</li>
+                        <li>An adapter: <code>toolData</code> for reads, <code>executeTool</code> for a direct write, and apply / undo when a tool proposes</li>
+                        <li>A controller on <code>onAiToolRegister</code> that pushes tools only for that scope</li>
+                        <li>A pure <code>run(data, args)</code> module when the tool should not write by itself</li>
+                    </ul>
+                    <p>Put that code in <code>site/webapp/</code>. Disable this plugin under Admin → Plugins to hide the demo. The panel, turns, and quota stay.</p>
+                </div>
+
+                <div class="jp-mt-30">
+                    <h3>🔀 Alongside the other hello demos</h3>
+                </div>
+                <div class="jp-output jp-output-info">
+                    <p>The <a href="/hello-todo/">To-Do MVC demo</a> is the same kind of site: each tab is its own <code>.shtml</code> document, and the browser fetches data when the page needs it. Hello AI's scratch pad is the textarea in front of you. The to-do demo's data is a Mongo collection behind <code>/api/1/helloTodo</code>.</p>
+                    <p>The <a href="/hello-vue/">Vue.js SPA demo</a> keeps its screens on one document and switches them in the browser. Code Examples and Architecture here are addresses you can open, bookmark, and reload on their own.</p>
+                </div>
+
+                <div class="jp-mt-30">
+                    <h3>📚 Next</h3>
+                </div>
+                <div class="jp-grid-auto-200 jp-mt-15">
+                    <a href="/hello-ai/" class="jp-card jp-link-card">
+                        <h4>📝 Scratch Pad</h4>
+                        <p>Open the chat and try a read, an append, and a rewrite</p>
+                    </a>
+                    <a href="/hello-ai/code-examples.shtml" class="jp-card jp-link-card">
+                        <h4>💻 Code Examples</h4>
+                        <p>Read the adapter, the tool list, and the two modules</p>
+                    </a>
+                    <a href="/jpulse-docs/installed-plugins/ai-core/README" class="jp-card jp-link-card">
+                        <h4>AI Core guide</h4>
+                        <p>The site-facing contract for tools, proposals, and the panel</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="jp-btn-nav-group">
+                <a href="/" class="jp-btn jp-btn-outline">🏠 Home</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello/" class="jp-btn jp-btn-outline">🌐 Hello World Site Demos</a>
+                <span class="jp-btn-nav-arrow">→</span>
+                <a href="/hello-ai/" class="jp-btn jp-btn-active">🤖 Hello AI</a>
+            </div>
+        </div>
+    </div>
+    {{file.include "jpulse-footer.tmpl"}}
+</body>
+</html>
+<!-- EOF plugins/hello-ai/webapp/view/hello-ai/architecture.shtml -->

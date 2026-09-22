@@ -2,8 +2,8 @@
  * @name            jPulse Framework / Plugins / Hello AI / WebApp / Tests / Unit / Hello AI
  * @tagline         Isolation, modules, propose, adapter scan
  * @file            plugins/hello-ai/webapp/tests/unit/hello-ai.test.js
- * @version         1.0.15
- * @release         2026-09-21
+ * @version         1.0.16
+ * @release         2026-09-22
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
  * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
@@ -231,6 +231,29 @@ describe('hello-ai propose module', () => {
         expect(propose.proposes).toBe(true);
         expect(propose.module).toBe('proposeRewrite');
         expect(propose.mutates).toBeFalsy();
+    });
+});
+
+describe('hello-ai learning pages', () => {
+    const dir = path.resolve(process.cwd(), 'plugins/hello-ai/webapp/view/hello-ai');
+
+    test('scratch pad, code examples, and architecture link to each other', () => {
+        const index = fs.readFileSync(path.join(dir, 'index.shtml'), 'utf8');
+        const code = fs.readFileSync(path.join(dir, 'code-examples.shtml'), 'utf8');
+        const arch = fs.readFileSync(path.join(dir, 'architecture.shtml'), 'utf8');
+        for (const text of [index, code, arch]) {
+            expect(text).toMatch(/href="\/hello-ai\/"/);
+            expect(text).toMatch(/href="\/hello-ai\/code-examples\.shtml"/);
+            expect(text).toMatch(/href="\/hello-ai\/architecture\.shtml"/);
+        }
+        expect(code).toMatch(/read_draft/);
+        expect(code).toMatch(/propose_draft_rewrite/);
+        expect(code).toMatch(/append_draft/);
+        expect(code).toMatch(/get_hello_clock/);
+        expect(code).toMatch(/plugins\/hello-ai\/webapp\/controller\/helloAi\.js/);
+        expect(arch).toMatch(/scopeType === 'hello-ai'/);
+        expect(arch).toMatch(/WebSocket/);
+        expect(arch).toMatch(/applyProposal/);
     });
 });
 

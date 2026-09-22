@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.15
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.16
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -14,7 +14,9 @@ A 1.0.5 → later update that first adds this plugin will enable it. Disable **H
 
 ## What the page shows
 
-`/hello-ai/` is a scratch pad. It never reaches the server. User-facing copy uses that one name, not draft or summary.
+`/hello-ai/` is a scratch pad. Nothing on this page saves it, and a reload restores the text in the HTML. User-facing copy uses that one name, not draft or summary. A `read_draft` call returns that text, capped at 32 KB, as the tool result so the model can use it.
+
+Two more pages sit beside it, each its own document: [Code Examples](/hello-ai/code-examples.shtml) (the view adapter, the controller hooks, and the pure modules) and [Architecture](/hello-ai/architecture.shtml) (how a read, a proposal, an append, and the server clock move between the panel and the textarea). Opening either one in this tab leaves the scratch pad page.
 
 | Tool | Host | Path |
 |---|---|---|
@@ -35,7 +37,7 @@ For `curl`, prefix `[mock:tool:<name>:<jsonArgs>]`. JSON arrays cannot be typed 
 
 ## Disable
 
-Admin → Plugins → disable **hello-ai**. The page, the site-hello-demos menu entry, the dashboard card, and the two tool modules disappear. `ai-core` still serves the panel, attachments, propose/apply, and `sources`.
+Admin → Plugins → disable **hello-ai**. The scratch pad, Code Examples, Architecture, the site-hello-demos menu entry, the dashboard card, and the two tool modules disappear. `ai-core` still serves the panel, attachments, propose/apply, and `sources`.
 
 ## Copy the pattern
 
@@ -43,6 +45,7 @@ Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and 
 
 ## Plugin releases
 
+- **1.0.16**, W-248, 2026-09-22: Scratch Pad, Code Examples, and Architecture are three pages. Code Examples shows the view adapter, the controller hooks, and the pure modules. Architecture follows a read, a proposal, an append, and the server clock. The guide says the pad is not saved, and that a read returns the text in the tool result. Disable hides all three pages.
 - **1.0.15**, W-247, 2026-09-21: Version lockstep with `ai-core` 1.0.15. `adapter.canUndoProposal` hides Undo when this tab has no snapshot (reload / other tab). No attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.14**, W-245, 2026-09-20: Version lockstep with `ai-core` 1.0.14. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.13**, W-241, 2026-09-19: Version lockstep with `ai-core` 1.0.13. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
