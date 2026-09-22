@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.14
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.15
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -23,7 +23,7 @@ A 1.0.5 → later update that first adds this plugin will enable it. Disable **H
 | `append_draft` | client | `adapter.executeTool`, `mutates: true`, 3 writes per turn |
 | `get_hello_clock` | server | `onAiToolExecute` |
 
-`append_draft` writes immediately. There is no Apply card; the undo is the textarea in front of you. `propose_draft_rewrite` is the other shape: it is a pure module, it writes nothing, and Apply / Undo sit on the card.
+`append_draft` writes immediately. There is no Apply card; the undo is the textarea in front of you. `propose_draft_rewrite` is the other shape: it is a pure module, it writes nothing, and Apply / Undo sit on the card. Undo is hidden after a reload — the snapshot lives in this tab only.
 
 Those tools register only when `scopeType` is `hello-ai`. Installing the bundle does not force a WebSocket on every other page.
 
@@ -43,6 +43,7 @@ Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and 
 
 ## Plugin releases
 
+- **1.0.15**, W-247, 2026-09-21: Version lockstep with `ai-core` 1.0.15. `adapter.canUndoProposal` hides Undo when this tab has no snapshot (reload / other tab). No attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.14**, W-245, 2026-09-20: Version lockstep with `ai-core` 1.0.14. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.13**, W-241, 2026-09-19: Version lockstep with `ai-core` 1.0.13. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.12**, W-239, 2026-09-19: Version lockstep with `ai-core` 1.0.12. No product change — no attach, no mobile, no title setter.

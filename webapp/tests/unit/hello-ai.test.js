@@ -2,8 +2,8 @@
  * @name            jPulse Framework / Plugins / Hello AI / WebApp / Tests / Unit / Hello AI
  * @tagline         Isolation, modules, propose, adapter scan
  * @file            plugins/hello-ai/webapp/tests/unit/hello-ai.test.js
- * @version         1.0.14
- * @release         2026-09-20
+ * @version         1.0.15
+ * @release         2026-09-21
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
  * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
@@ -30,6 +30,29 @@ import {
     scanToolModules
 } from '../../../../ai-core/webapp/utils/tools/index.js';
 import { testActor } from '../../../../ai-core/webapp/tests/unit/helpers.js';
+
+function helloPageAdapter(draft) {
+    return {
+        _undoById: {},
+        applyProposal: function (proposal) {
+            const payload = (proposal && proposal.payload) || {};
+            this._undoById[proposal.id] = draft.value;
+            draft.value = String(payload.text || '');
+            return true;
+        },
+        canUndoProposal: function (proposal) {
+            return !!(proposal && this._undoById[proposal.id] != null);
+        },
+        undoProposal: function (proposal) {
+            if (!this.canUndoProposal(proposal)) {
+                return false;
+            }
+            draft.value = this._undoById[proposal.id];
+            delete this._undoById[proposal.id];
+            return true;
+        }
+    };
+}
 
 afterEach(() => {
     clearTools();
@@ -165,6 +188,39 @@ describe('hello-ai propose module', () => {
         expect(pad.value).toBe('Old');
     });
 
+    test('canUndoProposal is false until apply, then false again after undo', async () => {
+        const draft = { value: 'Old' };
+        const adapter = helloPageAdapter(draft);
+        const proposal = { id: 'p1', payload: { text: 'New' } };
+        expect(adapter.canUndoProposal(proposal)).toBe(false);
+        expect(adapter.undoProposal(proposal)).toBe(false);
+        expect(draft.value).toBe('Old');
+        const applied = await applyThenRecord({
+            proposal,
+            apply: (row) => adapter.applyProposal(row),
+            record: () => true
+        });
+        expect(applied.ok).toBe(true);
+        expect(draft.value).toBe('New');
+        expect(adapter.canUndoProposal(proposal)).toBe(true);
+        const undone = await undoThenRecord({
+            proposal,
+            undo: (row) => adapter.undoProposal(row),
+            record: () => true
+        });
+        expect(undone.ok).toBe(true);
+        expect(draft.value).toBe('Old');
+        expect(adapter.canUndoProposal(proposal)).toBe(false);
+        expect(adapter.undoProposal(proposal)).toBe(false);
+        draft.value = '';
+        const emptySnap = { id: 'p2', payload: { text: 'From empty' } };
+        expect(adapter.applyProposal(emptySnap)).toBe(true);
+        expect(adapter.canUndoProposal(emptySnap)).toBe(true);
+        expect(adapter.undoProposal(emptySnap)).toBe(true);
+        expect(draft.value).toBe('');
+        expect(adapter.canUndoProposal(emptySnap)).toBe(false);
+    });
+
     test('demo registers the proposing tool only for hello-ai', async () => {
         const other = { tools: [], actor: testActor({ scopeType: 'doc' }) };
         await HelloAiController.onAiToolRegister(other);
@@ -190,6 +246,8 @@ describe('adapter contract scan', () => {
         expect(text).not.toMatch(/canAttach/);
         expect(text).not.toMatch(/mobile:/);
         expect(text).not.toMatch(/setTitle/);
+        expect(text).toMatch(/canUndoProposal:/);
+        expect(text).toMatch(/this\._undoById\[proposal\.id\] != null/);
     });
 
     test('site menu entry lives on hello-ai, not ai-core', () => {

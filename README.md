@@ -1,4 +1,4 @@
-# jPulse Framework / Plugins / Hello AI Plugin v1.0.14
+# jPulse Framework / Plugins / Hello AI Plugin v1.0.15
 
 Scratch-pad sample for the AI agent. Not a product. Copy the pattern into your site; do not import these tools.
 
@@ -30,6 +30,7 @@ npx jest plugins/hello-ai/webapp/tests/unit --runInBand
 
 ## Plugin releases
 
+- **1.0.15**, W-247, 2026-09-21: Version lockstep with `ai-core` 1.0.15. `adapter.canUndoProposal` hides Undo when this tab has no snapshot (reload / other tab). No attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.14**, W-245, 2026-09-20: Version lockstep with `ai-core` 1.0.14. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.13**, W-241, 2026-09-19: Version lockstep with `ai-core` 1.0.13. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.12**, W-239, 2026-09-19: Version lockstep with `ai-core` 1.0.12. No product change — no attach, no mobile, no title setter.
