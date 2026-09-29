@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.16
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.17
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -45,6 +45,7 @@ Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and 
 
 ## Plugin releases
 
+- **1.0.17**, W-252, 2026-09-30: Version lockstep with `ai-core` 1.0.17. No product change.
 - **1.0.16**, W-248, 2026-09-22: Scratch Pad, Code Examples, and Architecture are three pages. Code Examples shows the view adapter, the controller hooks, and the pure modules. Architecture follows a read, a proposal, an append, and the server clock. The guide says the pad is not saved, and that a read returns the text in the tool result. Disable hides all three pages.
 - **1.0.15**, W-247, 2026-09-21: Version lockstep with `ai-core` 1.0.15. `adapter.canUndoProposal` hides Undo when this tab has no snapshot (reload / other tab). No attach, no mobile, no title setter, no `resetOnTitleDblclick`.
 - **1.0.14**, W-245, 2026-09-20: Version lockstep with `ai-core` 1.0.14. No product change — no attach, no mobile, no title setter, no `resetOnTitleDblclick`.
