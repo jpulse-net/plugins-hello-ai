@@ -3,7 +3,7 @@
  * @tagline         hello-ai demo hooks
  * @description     Scratch-pad tools, gated on scopeType hello-ai
  * @file            plugins/hello-ai/webapp/controller/helloAi.js
- * @version         1.0.17
+ * @version         1.0.18
  * @release         2026-09-30
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
