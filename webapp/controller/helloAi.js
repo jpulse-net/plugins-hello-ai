@@ -3,8 +3,8 @@
  * @tagline         hello-ai demo hooks
  * @description     Scratch-pad tools, gated on scopeType hello-ai
  * @file            plugins/hello-ai/webapp/controller/helloAi.js
- * @version         1.0.18
- * @release         2026-09-30
+ * @version         1.0.19
+ * @release         2026-10-01
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
  * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
@@ -22,11 +22,17 @@ function isHelloScope(ctx) {
 class HelloAiController {
     static hooks = {
         onAiScopeResolve: { handler: 'onAiScopeResolve' },
+        onAiScopeTypes: { handler: 'onAiScopeTypes' },
         onAiToolRegister: { handler: 'onAiToolRegister' },
         onAiToolExecute: { handler: 'onAiToolExecute' },
         onAiToolData: { handler: 'onAiToolData' },
         onAiPromptFragment: { handler: 'onAiPromptFragment' }
     };
+
+    static async onAiScopeTypes(ctx) {
+        ctx.scopeTypes = ctx.scopeTypes || [];
+        ctx.scopeTypes.push({ scopeType: SCOPE_TYPE, label: 'Hello AI' });
+    }
 
     static async onAiScopeResolve(ctx) {
         if (!isHelloScope(ctx)) {

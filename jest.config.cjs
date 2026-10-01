@@ -3,8 +3,8 @@
  * @tagline         Delegate Jest to the parent jPulse framework checkout
  * @description     Unit tests need that repo's Babel transform, globalSetup, and .jpulse/app.json
  * @file            plugins/hello-ai/jest.config.cjs
- * @version         1.0.18
- * @release         2026-09-30
+ * @version         1.0.19
+ * @release         2026-10-01
  * @repository      https://github.com/jpulse-net/plugin-hello-ai
  * @author          Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
  * @copyright       2026 Peter Thoeny, https://twiki.org & https://github.com/peterthoeny/
