@@ -1,4 +1,4 @@
-# jPulse Framework / Plugins / Hello AI Plugin v1.0.19
+# jPulse Framework / Plugins / Hello AI Plugin v1.0.20
 
 Scratch-pad sample for the AI agent. Not a product. Copy the pattern into your site; do not import these tools.
 
@@ -30,6 +30,7 @@ npx jest plugins/hello-ai/webapp/tests/unit --runInBand
 
 ## Plugin releases
 
+- **1.0.20**, W-264, 2026-10-08: Version lockstep with `ai-core` 1.0.20. No product change.
 - **1.0.19**, W-258, 2026-10-01: Names the hello-ai scope type for the usage page. Version lockstep with `ai-core` 1.0.19.
 - **1.0.17**, W-252, 2026-09-30: Version lockstep with `ai-core` 1.0.17. No product change.
 - **1.0.16**, W-248, 2026-09-22: Scratch Pad, Code Examples, and Architecture are three pages. Code Examples shows the view adapter, the controller hooks, and the pure modules. Architecture follows a read, a proposal, an append, and the server clock.
