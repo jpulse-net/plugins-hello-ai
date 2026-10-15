@@ -1,4 +1,4 @@
-# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.20
+# jPulse Docs / Installed Plugins / Hello AI Plugin v1.0.21
 
 Hello AI is the scratch-pad sample that ships with `@jpulse-net/plugin-ai-core`. It is not a product. Copy the pattern into your site. Do not import these tools.
 
@@ -45,6 +45,7 @@ Look at `webapp/controller/helloAi.js`, `webapp/view/hello-ai/index.shtml`, and 
 
 ## Plugin releases
 
+- **1.0.21**, W-267, 2026-10-15: Version lockstep with `ai-core` 1.0.21. No product change.
 - **1.0.20**, W-264, 2026-10-08: Version lockstep with `ai-core` 1.0.20. No product change.
 - **1.0.19**, W-258, 2026-10-01: Names the hello-ai scope type for the usage page. Version lockstep with `ai-core` 1.0.19.
 - **1.0.17**, W-252, 2026-09-30: Version lockstep with `ai-core` 1.0.17. No product change.
